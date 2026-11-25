@@ -64,7 +64,7 @@ export default function Contact() {
       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <SectionHeading label="Start a project" title="Have a build in mind?">
-            Tell me what you need and where it is headed. Every inquiry gets a direct reply from me. I work remotely with clients wherever they are.
+            Tell me what you need and where it is headed. Every inquiry gets a direct reply from me. I'm based in Pakistan and work remotely with clients wherever they are.
           </SectionHeading>
           <p className="reveal mt-6 flex items-center gap-2 text-sm text-soft">
             <span className="led size-2 rounded-full bg-ok" />

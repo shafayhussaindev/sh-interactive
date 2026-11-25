@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { siteUrlFromEnv } from './site-url.js';
 
 // In `npm run dev`, serve /api/contact from api/contact.js the way Vercel does in production.
 function apiDev() {
@@ -16,15 +17,12 @@ function apiDev() {
   };
 }
 
-// Link-preview tags need absolute URLs. Uses SITE_URL if set (e.g. https://yourdomain.com),
-// otherwise the production domain Vercel provides during its builds.
+// Link-preview tags need absolute URLs (see site-url.js).
 function siteUrl() {
   return {
     name: 'site-url',
     transformIndexHtml(html) {
-      const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-      const url = (process.env.SITE_URL || (vercel ? `https://${vercel}` : '')).replace(/\/$/, '');
-      return html.replaceAll('%SITE_URL%', url);
+      return html.replaceAll('%SITE_URL%', siteUrlFromEnv());
     },
   };
 }

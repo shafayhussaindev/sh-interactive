@@ -25,7 +25,7 @@ export default function Projects() {
               title="Projects I have built and shipped"
               size="text-[clamp(2.25rem,4.2vw,3.5rem)]"
             >
-              Websites, web apps and business software, from first sketch to production. Open any project for the full
+              Websites, web apps and business software I have engineered, from first sketch to production. Open any project for the full
               case study: the problem, the solution and how it was built.
             </SectionHeading>
 

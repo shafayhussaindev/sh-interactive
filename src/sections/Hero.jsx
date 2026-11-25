@@ -18,7 +18,7 @@ export default function Hero() {
           <div className="lg:pb-3">
             <p className="hero-in text-lg text-soft">
               Conversion-focused landing pages, and full-stack apps with logins, dashboards and databases. Planned,
-              built and deployed by me, Shafay Hussain.
+              built and deployed by me, Shafay Hussain, a software engineer working with clients worldwide.
             </p>
             <div className="hero-in mt-8 flex flex-wrap gap-3">
               <a href="#contact" className="btn btn-primary">

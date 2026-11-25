@@ -15,33 +15,36 @@ const SITE = 'SH // Interactive';
 const ROUTES = {
   '/': [
     Home,
-    `${SITE} — Websites and web apps by Shafay Hussain`,
-    'Custom websites, landing pages and full-stack web apps, designed, built and deployed by Shafay Hussain.',
+    `Shafay Hussain — Software Engineer & Web Developer | ${SITE}`,
+    'Shafay Hussain is a software engineer and full-stack web developer in Pakistan, building custom websites, web apps and business software for clients worldwide.',
   ],
   '/services': [
     Services,
-    `Services — ${SITE}`,
-    'Custom website development, web apps and dashboards, e-commerce and admin panels by Shafay Hussain.',
+    `Web Development Services: Websites, Web Apps & E-commerce | ${SITE}`,
+    'Hire a web developer for custom website development, full-stack web apps and dashboards, e-commerce stores and admin panels. Fixed scope, remote, worldwide.',
   ],
   '/software': [
     Software,
-    `Business Software — ${SITE}`,
-    'Business software for retail, bookings, portals and admin panels: stock, POS, appointments, records and more.',
+    `Custom Business Software Development: POS, Inventory & Booking | ${SITE}`,
+    'Custom business software built by a software developer: POS and billing, inventory and stock management, appointment booking, client portals and admin panels.',
   ],
   '/projects': [
     Projects,
-    `Projects — ${SITE}`,
-    'Selected projects by Shafay Hussain, with screenshots, live links and case studies.',
+    `Projects & Case Studies | ${SITE}`,
+    'Software engineering and web development projects by Shafay Hussain: live sites, screenshots and case studies covering the problem, solution and architecture.',
   ],
   '/creative-lab': [
     CreativeLab,
-    `Creative Lab — ${SITE}`,
-    'AI voiceover, AI logo and brand identity kits, 3D modeling and AI video generation by Shafay Hussain.',
+    `AI Voiceover, Logo Design, 3D Modeling & AI Video | ${SITE}`,
+    'Creative services from SH Interactive: AI voiceover, AI logo and brand identity kits, AI image generation, 3D modeling in Blender and AI video generation.',
   ],
 };
 
+// Every indexable URL, used by the build to prerender HTML and write sitemap.xml (scripts/prerender.js).
+export const PATHS = [...Object.keys(ROUTES), ...SERVICES.map((s) => `/services/${s.id}`)];
+
 // Returns the page element (not a new component type, which would remount on every render).
-function resolve(path) {
+export function resolve(path) {
   if (ROUTES[path]) {
     const [Page, title, description] = ROUTES[path];
     return [<Page />, title, description];
