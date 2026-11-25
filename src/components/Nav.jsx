@@ -93,8 +93,11 @@ export default function Nav() {
   return (
     <header className="fixed inset-x-0 top-3 z-40 px-3 md:top-4 md:px-6">
       <nav className="nav-bar nav-surface mx-auto flex h-14 max-w-6xl items-center justify-between rounded-full pl-5 pr-2">
-        <a href="/#top" onClick={close} className="text-[16px] font-semibold tracking-[-0.01em]">
-          SH <span className="text-muted">//</span> Interactive
+        <a href="/#top" onClick={close} className="flex items-center gap-2.5 text-[16px] font-semibold tracking-[-0.01em]">
+          <img src="/logo.png" alt="" width="56" height="24" className="h-6 w-auto" />
+          <span>
+            SH <span className="text-muted">//</span> Interactive
+          </span>
         </a>
         <ul
           ref={list}
