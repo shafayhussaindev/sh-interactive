@@ -1,0 +1,645 @@
+@import 'tailwindcss';
+@config '../tailwind.config.js';
+
+/* Precision light: cool high-contrast neutrals, one electric-blue accent, dark code panels
+   for product moments. Solid colors only, no gradients. */
+:root {
+  color-scheme: light;
+  --bg-canvas: #fbfbfc;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f4f5f7;
+  --bg-hover: #edeef1;
+  --text-primary: #0b0d12;
+  --text-secondary: #4b5160;
+  --text-muted: #80869a;
+  --text-stroke: #c9ccd3;
+  --accent-primary: #3d5afe;
+  --accent-hover: #2f48e0;
+  --accent-tint: #eef1ff;
+  --border-subtle: #e7e8ec;
+  --border-strong: #d3d5db;
+  --status-ok: #16a34a;
+
+  /* Dark panels: editors, terminals and build logs. */
+  --panel: #0d1117;
+  --panel-raised: #161b22;
+  --panel-line: rgba(240, 246, 252, 0.1);
+  --panel-text: #e6edf3;
+  --panel-muted: #8b949e;
+  --code-key: #ff7b72;
+  --code-fn: #d2a8ff;
+  --code-str: #a5d6ff;
+  --code-num: #79c0ff;
+  --code-ok: #3fb950;
+
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-float: 0 1px 2px rgba(16, 24, 40, 0.06), 0 12px 32px -8px rgba(16, 24, 40, 0.18);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Engineering grid: a 48px SVG tile of hairlines, not a gradient. */
+  --grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0v48' fill='none' stroke='%230b0d12' stroke-opacity='.06'/%3E%3C/svg%3E");
+}
+
+/* Software page: a slightly warmer off-white, plus amber and WhatsApp tones for the story. */
+:root:has(.software-theme) {
+  --bg-canvas: #f8f8f6;
+  --bg-subtle: #f1f1ee;
+  --border-subtle: #e5e5e0;
+  --border-strong: #d4d4cd;
+}
+
+:root {
+  --warn: #b45309;
+  --warn-tint: #fef3c7;
+  --wa: #128c4a;
+  --wa-tint: #e7f6ec;
+  --note: #fde68a;
+}
+
+@layer base {
+  html {
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+  }
+
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--accent-tint);
+    color: var(--accent-hover);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .card {
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    background-color: var(--bg-surface);
+    box-shadow: var(--shadow-card);
+    transition:
+      border-color 150ms var(--ease),
+      box-shadow 150ms var(--ease);
+  }
+
+  .card:hover {
+    border-color: var(--border-strong);
+  }
+
+  a.card:hover,
+  button.card:hover {
+    box-shadow: var(--shadow-float);
+  }
+
+  /* Light tray for app previews and readouts. */
+  .well {
+    border: 1px solid var(--border-subtle);
+    background-color: var(--bg-subtle);
+  }
+
+  /* Dark panel for code, terminals and build logs. */
+  .panel {
+    border: 1px solid var(--panel-line);
+    background-color: var(--panel);
+    color: var(--panel-text);
+    font-family: 'Geist Mono', ui-monospace, monospace;
+  }
+
+  .grid-bg {
+    background-image: var(--grid);
+    background-position: center top;
+  }
+
+  .groove {
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* Toggle chip: tabs and selectable pills. */
+  .key {
+    border: 1px solid var(--border-subtle);
+    background-color: var(--bg-surface);
+    transition:
+      background-color 150ms var(--ease),
+      border-color 150ms var(--ease),
+      color 150ms var(--ease);
+  }
+
+  .key:hover {
+    border-color: var(--border-strong);
+  }
+
+  .key[aria-selected='true'],
+  input:checked + .key {
+    background-color: var(--accent-tint);
+    border-color: var(--accent-primary);
+    color: var(--accent-hover);
+  }
+
+  input:focus-visible + .key {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  /* Status dot with a soft halo ring. */
+  .led {
+    box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 0%, transparent);
+  }
+
+  .led.bg-ok {
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+  }
+
+  /* Floating glass capsule for the nav (and its mobile dropdown). */
+  .nav-surface {
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background-color: rgba(244, 245, 247, 0.72);
+    backdrop-filter: saturate(180%) blur(16px);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 1px 2px rgba(16, 24, 40, 0.06),
+      0 12px 32px -12px rgba(16, 24, 40, 0.18);
+  }
+
+  /* The liquid pill behind the hovered or active nav link. */
+  .nav-pill {
+    border-radius: 999px;
+    background-color: var(--bg-surface);
+    box-shadow:
+      inset 0 1px 0 #ffffff,
+      0 1px 2px rgba(16, 24, 40, 0.1),
+      0 4px 12px -4px rgba(16, 24, 40, 0.16);
+  }
+
+  .eyebrow {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Technical meta, metric labels, timestamps: mono, not uppercased (URLs and units stay readable). */
+  .label {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--text-muted);
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background-color: var(--bg-subtle);
+    padding: 2px 8px;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 12px;
+    line-height: 20px;
+    color: var(--text-secondary);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      background-color 150ms var(--ease),
+      border-color 150ms var(--ease),
+      transform 150ms var(--ease);
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  .btn-sm {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
+  .btn-primary {
+    background-color: var(--accent-primary);
+    color: #ffffff;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 1px 2px rgba(16, 24, 40, 0.12);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--accent-hover);
+  }
+
+  .btn-sent {
+    background-color: var(--status-ok);
+    color: #ffffff;
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--border-subtle);
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-card);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--border-strong);
+  }
+
+  .field {
+    width: 100%;
+    height: 44px;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    background-color: var(--bg-surface);
+    padding: 0 12px;
+    font-size: 15px;
+    color: var(--text-primary);
+    transition:
+      border-color 150ms var(--ease),
+      box-shadow 150ms var(--ease);
+  }
+
+  textarea.field {
+    height: auto;
+    padding: 12px;
+  }
+
+  .field::placeholder {
+    color: var(--text-muted);
+  }
+
+  .field:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-tint);
+  }
+
+  /* Hollow statement: an outline layer with a solid ink copy wiped in on top by clip-path. */
+  .hollow {
+    color: transparent;
+    -webkit-text-stroke: 1.25px var(--text-stroke);
+  }
+
+  /* Same stroke width as the outline layer, in ink, so the filled text covers it exactly: one edge, no halo. */
+  .hollow-fill {
+    color: var(--text-primary);
+    -webkit-text-stroke: 1.25px var(--text-primary);
+    clip-path: inset(0 100% 0 0);
+  }
+
+  /* Case-study side sheet on the native <dialog>. */
+  .sheet {
+    margin: 0 0 0 auto;
+    width: min(36rem, 100%);
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    border-left: 1px solid var(--border-subtle);
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    box-shadow: -24px 0 48px -24px rgba(16, 24, 40, 0.25);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transition: translate 300ms var(--ease);
+  }
+
+  .sheet::backdrop {
+    background: rgba(11, 13, 18, 0.4);
+  }
+
+  @starting-style {
+    .sheet[open] {
+      translate: 24px 0;
+    }
+  }
+}
+
+/* Hidden until GSAP reveals them (see lib/motion.js). The `js` class is set in each HTML head. */
+.js .hero-in,
+.js .reveal-head,
+.js .reveal {
+  visibility: hidden;
+}
+
+/* Scrolling tech-stack belt: an endless linear slide that pauses while hovered. */
+.belt {
+  padding-left: 8px;
+}
+
+.belt-track {
+  animation: belt 48s linear infinite;
+}
+
+.belt:hover .belt-track {
+  animation-play-state: paused;
+}
+
+@keyframes belt {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* 3D space for the software story (CSS 3D transforms keep text as crisp vector type). */
+.stage-3d {
+  perspective: 1400px;
+}
+
+.preserve-3d,
+.space-3d,
+.space-3d * {
+  transform-style: preserve-3d;
+}
+
+.layer-3d {
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Frosted glass pane: solid translucent white over a backdrop blur, no gradient. */
+.glass {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+}
+
+/* Bento card with a border spotlight: a blurred solid accent disc that only shows through the 1px ring. */
+.spot-card {
+  position: relative;
+  border-radius: 12px;
+  padding: 1px;
+  box-shadow: var(--shadow-card);
+}
+
+.spot-ring {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: var(--border-subtle);
+}
+
+.spot-blob {
+  position: absolute;
+  left: -110px;
+  top: -110px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background-color: var(--accent-primary);
+  filter: blur(36px);
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+  pointer-events: none;
+}
+
+.spot-card:hover .spot-blob {
+  opacity: 0.6;
+}
+
+.spot-body {
+  position: relative;
+  height: 100%;
+  border-radius: 11px;
+  background-color: var(--bg-surface);
+}
+
+/* Glossy Work cards. The surface is a hair darker than white so the white sheen can read on it,
+   with a bright top edge; the shine itself is a blurred solid band, not a gradient. */
+.gloss-card {
+  border: 1px solid var(--border-subtle);
+  background-color: #f6f7f9;
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 1px 2px rgba(16, 24, 40, 0.05),
+    0 18px 40px -20px rgba(16, 24, 40, 0.22);
+  transition: border-color 150ms var(--ease);
+}
+
+.gloss-card:hover {
+  border-color: var(--border-strong);
+}
+
+.panel-gloss {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.sheen-track {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-30%);
+}
+
+.sheen-band {
+  position: absolute;
+  top: -40%;
+  left: 0;
+  width: 7rem;
+  height: 180%;
+  rotate: 18deg;
+  background-color: rgba(255, 255, 255, 0.85);
+  filter: blur(18px);
+}
+
+.group:hover .sheen-track {
+  animation: sheen 1100ms var(--ease) both;
+}
+
+@keyframes sheen {
+  from {
+    opacity: 1;
+    transform: translateX(-30%);
+  }
+  80% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(130%);
+  }
+}
+
+/* Dims a stacked card as the next one covers it. */
+.stack-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background-color: rgba(11, 13, 18, 0.06);
+  opacity: 0;
+}
+
+/* Hover demos inside service and software previews. */
+@keyframes preview-press {
+  40% {
+    transform: scale(0.88);
+  }
+}
+
+@keyframes preview-draw {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes preview-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes alert-ring {
+  from {
+    box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 45%, transparent);
+  }
+  to {
+    box-shadow: 0 0 0 8px color-mix(in srgb, currentColor 0%, transparent);
+  }
+}
+
+/* Hero live loop: an arriving booking row and its notification. */
+.row-in {
+  animation: row-in 600ms var(--ease) both;
+}
+
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+    background-color: var(--accent-tint);
+  }
+}
+
+.toast {
+  animation: toast 3800ms var(--ease) both;
+}
+
+@keyframes toast {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  10%,
+  85% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* Page-to-page transitions (cross-document View Transitions). Browsers without support just navigate.
+   The nav has its own name, so it stays put while the page underneath crossfades. */
+@view-transition {
+  navigation: auto;
+}
+
+.nav-bar {
+  view-transition-name: site-nav;
+}
+
+::view-transition-old(root) {
+  animation: page-out 180ms var(--ease) both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 320ms var(--ease) both;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.menu-in {
+  animation: menu-in 200ms var(--ease);
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .hero-in,
+  .js .reveal-head,
+  .js .reveal {
+    visibility: visible;
+  }
+
+  .hollow-fill {
+    clip-path: none;
+  }
+
+  .belt {
+    overflow-x: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  .group:hover [class*='animate-[preview-'],
+  .group:hover [class*='animate-[alert-ring'],
+  .group:hover .sheen-track {
+    animation: none;
+  }
+
+  .menu-in,
+  .row-in,
+  .toast,
+  .belt-track,
+  .sheet,
+  .card,
+  .key,
+  .btn {
+    animation: none;
+    transition: none;
+  }
+}
