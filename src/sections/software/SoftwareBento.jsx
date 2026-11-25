@@ -104,7 +104,9 @@ function Card({ item }) {
               <span className="eyebrow">{item.tag}</span>
             </div>
             <h3 className={`mt-10 font-semibold leading-snug ${item.wide ? 'text-xl tracking-[-0.01em]' : 'text-lg'}`}>
-              {item.title}
+              <a href={item.page} className="underline-offset-4 hover:underline">
+                {item.title}
+              </a>
             </h3>
             <p className="mt-3 max-w-xl text-soft">{item.body}</p>
             <ul className="mt-5 flex flex-wrap gap-2">

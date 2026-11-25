@@ -4,7 +4,7 @@ import Nav from '../components/Nav';
 import SectionHeading from '../components/SectionHeading';
 import ServicePreview from '../components/ServicePreview';
 import Contact from '../sections/Contact';
-import { SERVICES, servicePath } from '../data/services';
+import { GROUPS, SERVICES, servicePath } from '../data/services';
 
 export default function Services() {
   return (
@@ -19,30 +19,36 @@ export default function Services() {
               title="What I build for businesses"
               size="text-[clamp(2.25rem,4.2vw,3.5rem)]"
             >
-              Four kinds of projects, each planned, designed, built and deployed by me, from the first sketch to launch
-              day. Open one to see exactly what the work involves and what you get.
+              Websites, web apps, business software and AI creative work, each planned, designed, built and delivered
+              by me, from the first sketch to launch day. Open one to see exactly what the work involves and what you
+              get.
             </SectionHeading>
 
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {SERVICES.map((s, i) => (
-                <a
-                  key={s.id}
-                  href={servicePath(s.id)}
-                  className="reveal card group flex flex-col p-2 transition-colors"
-                >
-                  <ServicePreview id={s.id} />
-                  <div className="flex flex-1 flex-col p-4">
-                    <p className="eyebrow">{s.tag}</p>
-                    <h2 className="mt-3 text-lg font-semibold leading-snug">{s.title}</h2>
-                    <p className="mt-2 text-sm text-soft">{s.short}</p>
-                    <span className="mt-auto flex items-center gap-2 pt-6 text-sm text-soft transition-colors group-hover:text-ink">
-                      View service
-                      <MaterialIcon name="arrow_forward" size={16} />
-                    </span>
-                  </div>
-                </a>
-              ))}
-            </div>
+            {GROUPS.map((group) => (
+              <div key={group} className="mt-16">
+                <h2 className="label">{group}</h2>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {SERVICES.filter((s) => s.group === group).map((s) => (
+                    <a
+                      key={s.id}
+                      href={servicePath(s.id)}
+                      className="reveal card group flex flex-col p-2 transition-colors"
+                    >
+                      <ServicePreview service={s} />
+                      <div className="flex flex-1 flex-col p-4">
+                        <p className="eyebrow">{s.tag}</p>
+                        <h3 className="mt-3 text-lg font-semibold leading-snug">{s.title}</h3>
+                        <p className="mt-2 text-sm text-soft">{s.short}</p>
+                        <span className="mt-auto flex items-center gap-2 pt-6 text-sm text-soft transition-colors group-hover:text-ink">
+                          View service
+                          <MaterialIcon name="arrow_forward" size={16} />
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
 
             <p className="reveal mt-8 text-sm text-muted">
               Looking for stock, billing, booking or records software?{' '}

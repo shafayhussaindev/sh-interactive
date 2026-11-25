@@ -1,3 +1,5 @@
+import MaterialIcon from './MaterialIcon';
+
 // Small coded previews of what each service produces. Text stays at 11px or above.
 // Each plays a one-shot demo while its card (the nearest `.group`) is hovered.
 
@@ -145,11 +147,18 @@ function Admin() {
 
 const PREVIEWS = { websites: Website, 'web-apps': WebApp, ecommerce: Store, admin: Admin };
 
-export default function ServicePreview({ id, className = 'h-40' }) {
-  const Preview = PREVIEWS[id];
+// Takes a service from data/services.js; services without a coded preview show their icon.
+export default function ServicePreview({ service, className = 'h-40' }) {
+  const Preview = PREVIEWS[service.preview || service.id];
   return (
     <div aria-hidden="true" className={`well overflow-hidden rounded-lg ${className}`}>
-      <Preview />
+      {Preview ? (
+        <Preview />
+      ) : (
+        <div className="grid h-full place-items-center">
+          <MaterialIcon name={service.icon} size={56} className="text-muted transition-colors group-hover:text-accent" />
+        </div>
+      )}
     </div>
   );
 }

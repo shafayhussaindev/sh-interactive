@@ -149,6 +149,7 @@ export const PROJECTS = [
 export const LAB = [
   {
     id: 'voiceover',
+    page: '/services/ai-voiceover',
     icon: 'record_voice_over',
     tag: 'Audio',
     title: 'AI Voiceover',
@@ -159,6 +160,7 @@ export const LAB = [
   },
   {
     id: 'brand',
+    page: '/services/ai-logo-brand-kit',
     icon: 'palette',
     tag: 'Identity',
     title: 'AI Logo & Brand Identity Kits',
@@ -169,6 +171,7 @@ export const LAB = [
   },
   {
     id: 'images',
+    page: '/services/ai-image-generation',
     icon: 'auto_fix_high',
     tag: 'Visuals',
     title: 'AI Image Generation & Visual Systems',
@@ -179,6 +182,7 @@ export const LAB = [
   },
   {
     id: 'modeling',
+    page: '/services/3d-modeling',
     icon: 'view_in_ar',
     tag: '3D',
     title: '3D Modeling',
@@ -189,6 +193,7 @@ export const LAB = [
   },
   {
     id: 'video',
+    page: '/services/ai-video-generation',
     icon: 'movie',
     tag: 'Motion',
     title: 'AI Video Generation',

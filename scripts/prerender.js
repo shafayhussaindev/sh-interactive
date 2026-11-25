@@ -18,14 +18,18 @@ const template = readFileSync(join(DIST, 'index.html'), 'utf8');
 
 for (const path of [...PATHS, NOT_FOUND]) {
   globalThis.location.pathname = path;
-  const { html, title, description } = render(path);
+  const { html, title, description, schema } = render(path);
   const url = `${site}${path}`;
-  const head =
+  let head =
     path === NOT_FOUND
       ? '<meta name="robots" content="noindex" />'
       : site
         ? `<link rel="canonical" href="${url}" />`
         : '';
+  if (schema) {
+    const json = JSON.stringify(schema).replaceAll('%SITE_URL%', site).replace(/</g, '\\u003c');
+    head += `\n    <script type="application/ld+json">${json}</script>`;
+  }
   const page = template
     .replace(/<title>.*?<\/title>/, `<title>${escape(title)}</title>`)
     .replace(/(name="description" content=")[^"]*/, `$1${escape(description)}`)

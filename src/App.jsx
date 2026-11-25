@@ -15,30 +15,57 @@ const SITE = 'SH // Interactive';
 const ROUTES = {
   '/': [
     Home,
-    `Shafay Hussain — Software Engineer & Web Developer | ${SITE}`,
-    'Shafay Hussain is a software engineer and full-stack web developer in Pakistan, building custom websites, web apps and business software for clients worldwide.',
+    `Web Development Company | Websites, Web Apps, SaaS & AI Services | ${SITE}`,
+    'SH Interactive builds custom websites, landing pages, web applications, SaaS products, ecommerce stores, POS and booking software, plus AI voiceover, AI video, AI logos and 3D modeling. Pakistan-based, serving clients worldwide.',
   ],
   '/services': [
     Services,
-    `Web Development Services: Websites, Web Apps & E-commerce | ${SITE}`,
-    'Hire a web developer for custom website development, full-stack web apps and dashboards, e-commerce stores and admin panels. Fixed scope, remote, worldwide.',
+    `Web Development, Software & AI Services | ${SITE}`,
+    'Website development, landing pages, custom web apps, SaaS development, portals and dashboards, ecommerce, admin panels, POS and inventory software, booking software, AI voiceover, AI images, AI logos, 3D modeling and AI video.',
   ],
   '/software': [
     Software,
-    `Custom Business Software Development: POS, Inventory & Booking | ${SITE}`,
-    'Custom business software built by a software developer: POS and billing, inventory and stock management, appointment booking, client portals and admin panels.',
+    `Custom Business Software: POS, Inventory & Booking Systems | ${SITE}`,
+    'Custom business software development: POS and billing software, inventory management systems, appointment booking and membership software, client portals and admin panels.',
   ],
   '/projects': [
     Projects,
-    `Projects & Case Studies | ${SITE}`,
-    'Software engineering and web development projects by Shafay Hussain: live sites, screenshots and case studies covering the problem, solution and architecture.',
+    `Web Development Portfolio & Case Studies | ${SITE}`,
+    'Web development portfolio by Shafay Hussain: live websites, ecommerce stores, landing pages and web apps, with case studies covering the problem, solution and architecture.',
   ],
   '/creative-lab': [
     CreativeLab,
-    `AI Voiceover, Logo Design, 3D Modeling & AI Video | ${SITE}`,
-    'Creative services from SH Interactive: AI voiceover, AI logo and brand identity kits, AI image generation, 3D modeling in Blender and AI video generation.',
+    `AI Voiceover, AI Video, AI Logo Design & 3D Modeling | ${SITE}`,
+    'AI creative services: realistic AI voiceover, AI video generation, AI image generation, AI logo design and brand kits, and 3D modeling and rendering in Blender.',
   ],
 };
+
+// Per-service structured data (Service + breadcrumbs + FAQ); %SITE_URL% is filled in by scripts/prerender.js.
+const serviceSchema = (s) => ({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      name: s.title,
+      serviceType: s.title,
+      description: s.seoDescription,
+      url: `%SITE_URL%/services/${s.id}`,
+      provider: { '@id': '%SITE_URL%/#business' },
+      areaServed: 'Worldwide',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Services', item: '%SITE_URL%/services' },
+        { '@type': 'ListItem', position: 2, name: s.title, item: `%SITE_URL%/services/${s.id}` },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: s.faq.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+    },
+  ],
+});
 
 // Every indexable URL, used by the build to prerender HTML and write sitemap.xml (scripts/prerender.js).
 export const PATHS = [...Object.keys(ROUTES), ...SERVICES.map((s) => `/services/${s.id}`)];
@@ -50,7 +77,7 @@ export function resolve(path) {
     return [<Page />, title, description];
   }
   const service = SERVICES.find((s) => path === `/services/${s.id}`);
-  if (service) return [<ServicePage service={service} />, `${service.title} — ${SITE}`, service.intro];
+  if (service) return [<ServicePage service={service} />, `${service.seoTitle} | ${SITE}`, service.seoDescription, serviceSchema(service)];
   return [<NotFound />, `Page not found — ${SITE}`, ''];
 }
 

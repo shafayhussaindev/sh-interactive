@@ -72,10 +72,15 @@ export default function CreativeLab() {
                         </li>
                       ))}
                     </ul>
-                    <a href="#contact" className="btn btn-secondary mt-8 self-start">
-                      Discuss this service
-                      <MaterialIcon name="arrow_forward" size={18} />
-                    </a>
+                    <div className="mt-8 flex flex-wrap gap-3">
+                      <a href={s.page} className="btn btn-secondary">
+                        Full details
+                        <MaterialIcon name="arrow_forward" size={18} />
+                      </a>
+                      <a href="#contact" className="btn btn-secondary">
+                        Discuss this service
+                      </a>
+                    </div>
                   </div>
                 </article>
               ))}

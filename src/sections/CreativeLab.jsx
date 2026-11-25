@@ -20,7 +20,7 @@ export default function CreativeLab() {
 
         <div className="grid gap-4 md:grid-cols-2 lg:col-span-7">
           {LAB.map((item) => (
-            <a key={item.id} href={`/creative-lab#${item.id}`} className="reveal card group flex flex-col p-6 md:last:odd:col-span-2">
+            <a key={item.id} href={item.page} className="reveal card group flex flex-col p-6 md:last:odd:col-span-2">
               <div className="flex items-center justify-between">
                 <MaterialIcon name={item.icon} size={20} className="text-muted" />
                 <span className="eyebrow">{item.tag}</span>

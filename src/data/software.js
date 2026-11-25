@@ -26,6 +26,7 @@ export const STORY = [
 export const SOFTWARE = [
   {
     id: 'retail',
+    page: '/services/pos-inventory',
     icon: 'inventory_2',
     tag: 'Most requested',
     title: 'Retail, POS & Inventory',
@@ -37,6 +38,7 @@ export const SOFTWARE = [
   },
   {
     id: 'bookings',
+    page: '/services/booking-membership',
     icon: 'event_available',
     tag: 'Scheduling & CRM',
     title: 'Bookings, Memberships & Records',
@@ -46,6 +48,7 @@ export const SOFTWARE = [
   },
   {
     id: 'portals',
+    page: '/services/portals-dashboards',
     icon: 'manage_search',
     tag: 'Databases & Access',
     title: 'Portals & Searchable Catalogues',
@@ -55,6 +58,7 @@ export const SOFTWARE = [
   },
   {
     id: 'admin-only',
+    page: '/services/admin',
     icon: 'dashboard_customize',
     tag: 'For an existing site',
     title: 'Admin Panel Only',

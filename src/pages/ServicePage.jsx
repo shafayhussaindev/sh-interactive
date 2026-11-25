@@ -7,7 +7,7 @@ import Contact from '../sections/Contact';
 import { SERVICES, servicePath } from '../data/services';
 
 export default function ServicePage({ service }) {
-  const others = SERVICES.filter((s) => s.id !== service.id);
+  const others = SERVICES.filter((s) => s.id !== service.id && s.group === service.group).slice(0, 3);
 
   return (
     <SmoothScrollProvider>
@@ -42,7 +42,7 @@ export default function ServicePage({ service }) {
               </div>
             </div>
             <div className="hero-in card group p-2">
-              <ServicePreview id={service.id} className="h-64 md:h-72" />
+              <ServicePreview service={service} className="h-64 md:h-72" />
             </div>
           </div>
         </section>
@@ -114,6 +114,20 @@ export default function ServicePage({ service }) {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="px-4 py-24 md:px-6 md:py-32">
+          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-12">
+            <SectionHeading className="lg:col-span-5" label="FAQ" title="Common questions" />
+            <dl className="reveal divide-y divide-line border-y border-line lg:col-span-7">
+              {service.faq.map(({ q, a }) => (
+                <div key={q} className="py-6">
+                  <dt className="font-semibold">{q}</dt>
+                  <dd className="mt-2 text-soft">{a}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </section>
 
