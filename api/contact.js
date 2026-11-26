@@ -1,7 +1,8 @@
 // POST /api/contact: emails a project inquiry from the site's contact form to you, via Resend.
-// Runs as a Vercel serverless function (and in `npm run dev` through the Vite plugin in vite.config.js).
+// Runs as a Vercel serverless function, as a Netlify function (netlify/functions/contact.mjs), and in
+// `npm run dev` through the Vite plugin in vite.config.js.
 //
-// Environment variables (set in Vercel → Project → Settings → Environment Variables, or .env locally):
+// Environment variables (set in the host's environment variable settings, or .env locally):
 //   RESEND_API_KEY  required, from resend.com → API Keys
 //   CONTACT_TO      inbox that receives inquiries (default below)
 //   CONTACT_FROM    sender; "onboarding@resend.dev" works until you verify your own domain in Resend
@@ -12,7 +13,7 @@ const DEFAULT_TO = 'shafay666@hotmail.com';
 const DEFAULT_FROM = 'SH Interactive <onboarding@resend.dev>';
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-// ponytail: in-memory rate limit, per server instance (resets on cold start). Move to Vercel KV/Upstash if spam gets through.
+// ponytail: in-memory rate limit, per server instance (resets on cold start). Move to a shared store (Upstash, Netlify Blobs) if spam gets through.
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 const hits = new Map();
@@ -62,36 +63,33 @@ function send(res, status, payload) {
   res.end(JSON.stringify(payload));
 }
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return send(res, 405, { error: 'Method not allowed.' });
-  }
-
-  let body;
-  try {
-    body = await readJson(req);
-  } catch {
-    return send(res, 400, { error: 'Invalid request.' });
-  }
+// The host-independent part: spam trap, rate limit, checks and the Resend call.
+// Returns [status, payload]; the Vercel handler below and netlify/functions/contact.mjs both use it.
+export async function handleContact(body, ip) {
+  const fail = { error: 'The message could not be sent right now. Please email or WhatsApp instead.' };
 
   // Spam trap: a hidden field people never see. Bots that fill it get a normal-looking success and no email.
-  if (body.company) return send(res, 200, { ok: true });
-
-  const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
-  if (rateLimited(ip)) return send(res, 429, { error: 'Too many messages in a short time. Please try again later or email directly.' });
+  if (body.company) return [200, { ok: true }];
+  if (rateLimited(ip)) return [429, { error: 'Too many messages in a short time. Please try again later or email directly.' }];
 
   const result = validate(body);
-  if (!result.ok) return send(res, 400, { error: result.error });
+  if (!result.ok) return [400, { error: result.error }];
   const { name, email, brief, scope } = result.data;
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error('[contact] RESEND_API_KEY is not set');
-    return send(res, 500, { error: 'The form is not set up yet. Please email or WhatsApp instead.' });
+    return [500, { error: 'The form is not set up yet. Please email or WhatsApp instead.' }];
   }
 
-  const text = `New project inquiry from the website\n\nName: ${name}\nEmail: ${email}\nNeeds: ${scope.join(', ')}\n\n${brief}\n`;
+  const text = `New project inquiry from the website
+
+Name: ${name}
+Email: ${email}
+Needs: ${scope.join(', ')}
+
+${brief}
+`;
   const html = `
     <h2 style="margin:0 0 12px">New project inquiry</h2>
     <p><strong>Name:</strong> ${escapeHtml(name)}<br>
@@ -115,11 +113,30 @@ export default async function handler(req, res) {
     });
     if (!response.ok) {
       console.error('[contact] Resend error', response.status, await response.text());
-      return send(res, 502, { error: 'The message could not be sent right now. Please email or WhatsApp instead.' });
+      return [502, fail];
     }
-    return send(res, 200, { ok: true });
+    return [200, { ok: true }];
   } catch (error) {
     console.error('[contact] network error', error);
-    return send(res, 502, { error: 'The message could not be sent right now. Please email or WhatsApp instead.' });
+    return [502, fail];
   }
+}
+
+// Vercel (and `npm run dev`): Node-style (req, res).
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return send(res, 405, { error: 'Method not allowed.' });
+  }
+
+  let body;
+  try {
+    body = await readJson(req);
+  } catch {
+    return send(res, 400, { error: 'Invalid request.' });
+  }
+
+  const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
+  const [status, payload] = await handleContact(body, ip);
+  return send(res, status, payload);
 }

@@ -1,7 +1,7 @@
-// Run with: node --test api/contact.test.mjs
+// Run with: npm test
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { escapeHtml, validate } from './contact.js';
+import { escapeHtml, validate } from '../api/contact.js';
 
 const good = { name: 'Ayesha', email: 'ayesha@example.com', scope: ['Full-Stack Web App'], brief: 'A booking portal for our clinic.' };
 
