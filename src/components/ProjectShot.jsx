@@ -9,15 +9,17 @@ export default function ProjectShot({ project, className = '', eager = false }) 
         <span className="size-2 rounded-full bg-strong" />
         <span className="label ml-2 truncate">{domain}</span>
       </div>
-      <img
-        src={project.image}
-        alt={project.alt}
-        width="1440"
-        height="688"
-        loading={eager ? 'eager' : 'lazy'}
-        decoding="async"
-        className="block aspect-[1440/688] w-full object-cover object-top"
-      />
+      <div className="zoom-media">
+        <img
+          src={project.image}
+          alt={project.alt}
+          width="1440"
+          height="688"
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          className="block aspect-[1440/688] w-full object-cover object-top"
+        />
+      </div>
     </figure>
   );
 }

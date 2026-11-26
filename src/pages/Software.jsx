@@ -1,6 +1,6 @@
 import SmoothScrollProvider from '../components/SmoothScrollProvider';
 import Nav from '../components/Nav';
-import Contact from '../sections/Contact';
+import Footer from '../components/Footer';
 import ChaosHero from '../sections/software/ChaosHero';
 import StoryScroll from '../sections/software/StoryScroll';
 import SoftwareBento from '../sections/software/SoftwareBento';
@@ -16,7 +16,7 @@ export default function Software() {
           <StoryScroll />
           <SoftwareBento />
         </main>
-        <Contact />
+        <Footer />
       </div>
     </SmoothScrollProvider>
   );

@@ -29,13 +29,12 @@ function Window({ view, step, winRef, className = '', children }) {
 
 // Desktop: three narrative blocks scroll on the left while an angled 3D dashboard stays pinned on the
 // right. Each block swings the dashboard into its view (Flip handles the size change) and lifts that
-// view's key widgets out along the Z axis. The dashboard also leans with scroll velocity.
+// view's key widgets out along the Z axis.
 // Phones: each block is followed by its own flat window that rises out of depth as it enters.
 export default function StoryScroll() {
   const container = useRef(null);
   const steps = useRef([]);
   const sticky = useRef(null);
-  const lean = useRef(null);
   const dash = useRef(null);
   const win = useRef(null);
   const flipState = useRef(null);
@@ -65,24 +64,6 @@ export default function StoryScroll() {
       );
       if (reduced()) return;
 
-      // Lean with scroll velocity, then settle back once scrolling stops.
-      const leanY = gsap.quickTo(lean.current, 'rotationY', { duration: 0.8, ease: 'power3' });
-      const leanX = gsap.quickTo(lean.current, 'rotationX', { duration: 0.8, ease: 'power3' });
-      const settle = gsap.delayedCall(0.18, () => {
-        leanY(0);
-        leanX(0);
-      }).pause();
-      ScrollTrigger.create({
-        trigger: container.current,
-        start: 'top bottom',
-        end: 'bottom top',
-        onUpdate: (self) => {
-          const v = gsap.utils.clamp(-7, 7, self.getVelocity() / 260);
-          leanY(v);
-          leanX(-v * 0.4);
-          settle.restart(true);
-        },
-      });
 
       // As the story ends, the dashboard recedes so the cards below can take over.
       gsap.to(sticky.current, {
@@ -104,7 +85,7 @@ export default function StoryScroll() {
           autoAlpha: 0,
           transformPerspective: 1000,
           duration: 0.9,
-          ease: 'power3.out',
+          ease: 'brand',
           scrollTrigger: { trigger: el, start: 'top 85%', once: true },
         }),
       );
@@ -131,7 +112,7 @@ export default function StoryScroll() {
       gsap.fromTo(
         dash.current,
         { rotationY: ANGLES[key].rotationY - 64, rotationX: ANGLES[key].rotationX },
-        { ...ANGLES[key], duration: 0.9, ease: 'power3.out' },
+        { ...ANGLES[key], duration: 0.9, ease: 'brand' },
       );
       INTROS[key](gsap, gsap.utils.selector(win.current));
     }, win);
@@ -141,7 +122,7 @@ export default function StoryScroll() {
   const Current = VIEWS[STORY[view.stage].view];
 
   return (
-    <section id="story" ref={container} className="border-y border-line bg-surface px-4 md:px-6">
+    <section id="story" ref={container} className="overflow-x-clip border-y border-line bg-surface px-4 md:px-6">
       <div className="mx-auto max-w-6xl pt-24 md:pt-32">
         <SectionHeading label="How it works" title="From four registers to one system" />
 
@@ -172,7 +153,7 @@ export default function StoryScroll() {
 
           <div className="hidden lg:block">
             <div ref={sticky} className="stage-3d sticky top-[max(96px,calc(50svh-250px))] pb-32">
-              <div ref={lean} className="preserve-3d">
+              <div className="preserve-3d">
                 <div ref={dash} className="space-3d layer-3d">
                   <Window view={STORY[view.stage].view} step={view.stage} winRef={win}>
                     <div key={view.n}>

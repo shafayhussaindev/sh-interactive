@@ -4,7 +4,7 @@ import MaterialIcon from '../components/MaterialIcon';
 import Nav from '../components/Nav';
 import SectionHeading from '../components/SectionHeading';
 import SmoothScrollProvider from '../components/SmoothScrollProvider';
-import Contact from '../sections/Contact';
+import Footer from '../components/Footer';
 import ProjectShot from '../components/ProjectShot';
 import { PROJECTS } from '../data/content';
 
@@ -17,7 +17,7 @@ export default function Projects() {
     <SmoothScrollProvider>
       <Nav />
       <main>
-        <section id="top" className="px-4 pb-24 pt-32 md:px-6 md:pt-40">
+        <section id="top" data-enter className="px-4 pb-24 pt-32 md:px-6 md:pt-40">
           <div className="mx-auto max-w-6xl">
             <SectionHeading
               as="h1"
@@ -72,7 +72,7 @@ export default function Projects() {
         </section>
       </main>
 
-      <Contact />
+      <Footer />
       {active && <CaseStudy key={active.index} project={active} onClose={() => setActive(null)} />}
     </SmoothScrollProvider>
   );

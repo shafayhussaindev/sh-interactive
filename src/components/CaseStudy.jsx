@@ -74,15 +74,7 @@ export default function CaseStudy({ project, onClose }) {
             <MaterialIcon name="arrow_outward" size={18} />
           </a>
         )}
-        <a
-          href="#contact"
-          onClick={(e) => {
-            e.preventDefault();
-            close();
-            document.getElementById('contact').scrollIntoView();
-          }}
-          className="btn btn-primary"
-        >
+        <a href="/contact" className="btn btn-primary">
           Discuss a similar build
           <MaterialIcon name="arrow_outward" size={18} />
         </a>

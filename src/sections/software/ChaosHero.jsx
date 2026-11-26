@@ -104,8 +104,8 @@ export default function ChaosHero() {
   useEffect(() => {
     const mm = gsap.matchMedia();
     mm.add(
-      { desktop: '(min-width: 1024px)', motion: '(prefers-reduced-motion: no-preference)', hover: '(hover: hover)' },
-      ({ conditions: { desktop, motion, hover } }) => {
+      { desktop: '(min-width: 1024px)', motion: '(prefers-reduced-motion: no-preference)' },
+      ({ conditions: { desktop, motion } }) => {
         const q = gsap.utils.selector(stage.current);
         const cards = q('.chaos-card');
         const frame = q('.chaos-frame')[0];
@@ -148,26 +148,33 @@ export default function ChaosHero() {
             })
             .to(
               cards,
-              { x: 0, y: 0, z: 0, rotationX: 0, rotationY: 0, rotation: 0, scale: 0.62, ease: 'power2.inOut', stagger: 0.04 },
+              {
+                x: 0,
+                y: 0,
+                z: 0,
+                rotationX: 0,
+                rotationY: 0,
+                rotation: 0,
+                scale: 0.62,
+                ease: 'power2.inOut',
+                stagger: 0.04,
+              },
               0,
             )
             .to(cards, { autoAlpha: 0, duration: 0.25, stagger: 0.03 }, 0.65)
-            .to(frame, { autoAlpha: 1, z: 0, scale: 1, duration: 0.4, ease: 'power2.out' }, 0.55);
+            .to(frame, { autoAlpha: 1, z: 0, scale: 1, duration: 0.4, ease: 'brand' }, 0.55);
         } else {
           // Phones: no pinning; the cards rise out of depth as they enter.
-          gsap.from(cards, { z: -160, rotationX: 24, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08, delay: 0.3 });
+          gsap.from(cards, {
+            z: -160,
+            rotationX: 24,
+            autoAlpha: 0,
+            duration: 0.9,
+            ease: 'brand',
+            stagger: 0.08,
+            delay: 0.3,
+          });
         }
-
-        // Mouse tilt: the whole 3D stage leans toward the pointer.
-        if (!hover) return;
-        const rx = gsap.quickTo(stage.current, 'rotationX', { duration: 0.9, ease: 'power3' });
-        const ry = gsap.quickTo(stage.current, 'rotationY', { duration: 0.9, ease: 'power3' });
-        const onMove = (e) => {
-          ry((e.clientX / window.innerWidth - 0.5) * 16);
-          rx(-(e.clientY / window.innerHeight - 0.5) * 12);
-        };
-        window.addEventListener('pointermove', onMove, { passive: true });
-        return () => window.removeEventListener('pointermove', onMove);
       },
     );
     return () => mm.revert();
@@ -175,6 +182,7 @@ export default function ChaosHero() {
 
   return (
     <section
+      data-enter
       ref={section}
       id="top"
       className="overflow-hidden px-4 pb-24 pt-32 md:px-6 md:pt-40 lg:flex lg:min-h-svh lg:items-center lg:pb-16"
@@ -186,11 +194,11 @@ export default function ChaosHero() {
             Stop running your business out of four registers.
           </h1>
           <p className="hero-in mt-6 max-w-[34rem] text-lg text-soft">
-            Paper ledgers, missed WhatsApp orders and sticky notes, replaced by one system built around how you
-            actually work. Real systems, not templates with the logo swapped.
+            Paper ledgers, missed WhatsApp orders and sticky notes, replaced by one system built around how you actually
+            work. Real systems, not templates with the logo swapped.
           </p>
           <div className="hero-in mt-8 flex flex-wrap gap-3">
-            <a href="#contact" className="btn btn-primary">
+            <a href="/contact" className="btn btn-primary">
               Start a project
               <MaterialIcon name="arrow_outward" size={18} />
             </a>
@@ -203,33 +211,33 @@ export default function ChaosHero() {
         <div aria-hidden="true" className="hero-in relative h-[320px] sm:h-[440px]">
           {/* Perspective lives on this wrapper, which also shrinks the cluster to fit small screens. */}
           <div className="stage-3d absolute inset-0 max-sm:scale-[0.68]">
-          <div ref={stage} className="space-3d absolute inset-0">
-            {/* The unified frame every card converges into. */}
-            <div className="chaos-frame layer-3d absolute left-1/2 top-1/2 w-[340px] rounded-xl border border-line bg-surface shadow-[var(--shadow-float)]">
-              <div className="flex h-9 items-center gap-1.5 rounded-t-xl border-b border-line bg-deep px-3">
-                <span className="size-2 rounded-full bg-strong" />
-                <span className="size-2 rounded-full bg-strong" />
-                <span className="size-2 rounded-full bg-strong" />
-                <span className="label ml-2">app.yourbusiness.com</span>
-              </div>
-              <div className="grid grid-cols-3 gap-2 p-4">
-                {['Stock', 'Orders', 'Bookings'].map((label) => (
-                  <div key={label} className="rounded-lg border border-line px-2 py-3 text-center">
-                    <p className="label">{label}</p>
-                    <span className="mx-auto mt-2 block size-1.5 rounded-full bg-ok" />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {CARDS.map(({ Card }, i) => (
-              <div key={i} className="chaos-card layer-3d absolute left-1/2 top-1/2">
-                <div className="chaos-float shadow-[var(--shadow-float)]">
-                  <Card />
+            <div ref={stage} className="space-3d absolute inset-0">
+              {/* The unified frame every card converges into. */}
+              <div className="chaos-frame layer-3d absolute left-1/2 top-1/2 w-[340px] rounded-xl border border-line bg-surface shadow-[var(--shadow-float)]">
+                <div className="flex h-9 items-center gap-1.5 rounded-t-xl border-b border-line bg-deep px-3">
+                  <span className="size-2 rounded-full bg-strong" />
+                  <span className="size-2 rounded-full bg-strong" />
+                  <span className="size-2 rounded-full bg-strong" />
+                  <span className="label ml-2">app.yourbusiness.com</span>
+                </div>
+                <div className="grid grid-cols-3 gap-2 p-4">
+                  {['Stock', 'Orders', 'Bookings'].map((label) => (
+                    <div key={label} className="rounded-lg border border-line px-2 py-3 text-center">
+                      <p className="label">{label}</p>
+                      <span className="mx-auto mt-2 block size-1.5 rounded-full bg-ok" />
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
+
+              {CARDS.map(({ Card }, i) => (
+                <div key={i} className="chaos-card layer-3d absolute left-1/2 top-1/2">
+                  <div className="chaos-float shadow-[var(--shadow-float)]">
+                    <Card />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

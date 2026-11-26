@@ -3,7 +3,7 @@ import SmoothScrollProvider from '../components/SmoothScrollProvider';
 import Nav from '../components/Nav';
 import SectionHeading from '../components/SectionHeading';
 import ServicePreview from '../components/ServicePreview';
-import Contact from '../sections/Contact';
+import Footer from '../components/Footer';
 import { GROUPS, SERVICES, servicePath } from '../data/services';
 
 export default function Services() {
@@ -11,7 +11,7 @@ export default function Services() {
     <SmoothScrollProvider>
       <Nav />
       <main>
-        <section id="top" className="px-4 pb-24 pt-32 md:px-6 md:pt-40">
+        <section id="top" data-enter className="px-4 pb-24 pt-32 md:px-6 md:pt-40">
           <div className="mx-auto max-w-6xl">
             <SectionHeading
               as="h1"
@@ -52,7 +52,7 @@ export default function Services() {
 
             <p className="reveal mt-8 text-sm text-muted">
               Looking for stock, billing, booking or records software?{' '}
-              <a href="/software" className="text-soft underline-offset-4 transition-colors hover:text-ink hover:underline">
+              <a href="/software" className="link-draw text-soft hover:text-ink">
                 See business software
               </a>
             </p>
@@ -60,7 +60,7 @@ export default function Services() {
         </section>
       </main>
 
-      <Contact />
+      <Footer />
     </SmoothScrollProvider>
   );
 }

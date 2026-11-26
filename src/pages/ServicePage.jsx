@@ -3,7 +3,7 @@ import SmoothScrollProvider from '../components/SmoothScrollProvider';
 import Nav from '../components/Nav';
 import SectionHeading from '../components/SectionHeading';
 import ServicePreview from '../components/ServicePreview';
-import Contact from '../sections/Contact';
+import Footer from '../components/Footer';
 import { SERVICES, servicePath } from '../data/services';
 
 export default function ServicePage({ service }) {
@@ -13,11 +13,11 @@ export default function ServicePage({ service }) {
     <SmoothScrollProvider>
       <Nav />
       <main>
-        <section id="top" className="px-4 pb-24 pt-32 md:px-6 md:pt-40">
+        <section id="top" data-enter className="px-4 pb-24 pt-32 md:px-6 md:pt-40">
           <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-16">
             <div>
               <nav aria-label="Breadcrumb" className="hero-in eyebrow">
-                <a href="/services" className="transition-colors hover:text-ink">
+                <a href="/services" className="link-draw hover:text-ink">
                   Services
                 </a>
                 <span className="px-2">/</span>
@@ -32,7 +32,7 @@ export default function ServicePage({ service }) {
                 {service.intro}
               </p>
               <div className="hero-in mt-10 flex flex-wrap gap-3">
-                <a href="#contact" className="btn btn-primary">
+                <a href="/contact" className="btn btn-primary">
                   Start a project
                   <MaterialIcon name="arrow_outward" size={18} />
                 </a>
@@ -156,7 +156,7 @@ export default function ServicePage({ service }) {
         </section>
       </main>
 
-      <Contact />
+      <Footer />
     </SmoothScrollProvider>
   );
 }

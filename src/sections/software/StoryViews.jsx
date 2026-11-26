@@ -217,7 +217,7 @@ export const ANGLES = {
 };
 
 const LIFT = '0 26px 44px -18px rgba(16, 24, 40, 0.35)';
-const SPRING = 'elastic.out(1, 0.55)';
+const SPRING = 'brand'; // no overshoot: settles like the rest of the site
 
 // Desktop entrances: layers rise along Z with deepening shadows. `q` is a scoped selector.
 export const INTROS = {
@@ -227,14 +227,14 @@ export const INTROS = {
     gsap
       .timeline()
       // Tilt the table toward the viewer (top edge forward) so no part of it sinks behind the window surface.
-      .to(q('.js-table'), { rotationX: -8, z: 14, transformOrigin: '50% 100%', duration: 0.7, ease: 'power3.out' }, 0)
+      .to(q('.js-table'), { rotationX: -8, z: 14, transformOrigin: '50% 100%', duration: 0.7, ease: 'brand' }, 0)
       .to(counter, { v: 18, duration: 0.9, ease: 'power2.inOut', snap: { v: 1 }, onUpdate: () => (oil.textContent = counter.v) }, 0.1)
-      .to(q('.js-pop'), { z: 70, boxShadow: LIFT, duration: 0.7, ease: 'power3.out' }, 0.7)
+      .to(q('.js-pop'), { z: 70, boxShadow: LIFT, duration: 0.7, ease: 'brand' }, 0.7)
       .fromTo(q('.js-warn'), { z: 0, scale: 0.5, autoAlpha: 0 }, { z: 30, scale: 1, autoAlpha: 1, duration: 0.6, ease: SPRING }, 0.95)
       .fromTo(
         q('.js-receipt'),
         { x: -40, z: 0, rotationY: 0, autoAlpha: 0 },
-        { x: 0, z: 80, rotationY: 10, autoAlpha: 1, boxShadow: LIFT, duration: 0.8, ease: 'power3.out' },
+        { x: 0, z: 80, rotationY: 10, autoAlpha: 1, boxShadow: LIFT, duration: 0.8, ease: 'brand' },
         1.1,
       );
   },
@@ -247,13 +247,13 @@ export const INTROS = {
   admin: (gsap, q) => {
     gsap
       .timeline()
-      .fromTo(q('.js-new'), { y: 6, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, 0.3)
+      .fromTo(q('.js-new'), { y: 6, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'brand' }, 0.3)
       .fromTo(q('.js-site-price'), { backgroundColor: 'var(--accent-tint)' }, { backgroundColor: 'transparent', duration: 1 }, 0.6)
       .fromTo(q('.js-published'), { z: 0, scale: 0.5, autoAlpha: 0 }, { z: 40, scale: 1, autoAlpha: 1, duration: 0.7, ease: SPRING }, 0.7)
       .fromTo(
         q('.js-pane-portal'),
         { z: 0, x: -50, autoAlpha: 0 },
-        { z: 90, x: 0, autoAlpha: 1, boxShadow: LIFT, duration: 0.9, ease: 'power3.out' },
+        { z: 90, x: 0, autoAlpha: 1, boxShadow: LIFT, duration: 0.9, ease: 'brand' },
         0.4,
       );
   },

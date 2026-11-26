@@ -68,10 +68,23 @@
 
   body {
     font-family: 'Geist', system-ui, sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Paragraphs avoid one-word last lines; headings balance their lines. */
+  p {
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 
   ::selection {
@@ -92,17 +105,26 @@
     background-color: var(--bg-surface);
     box-shadow: var(--shadow-card);
     transition:
-      border-color 150ms var(--ease),
-      box-shadow 150ms var(--ease);
+      border-color 200ms var(--ease),
+      box-shadow 300ms var(--ease),
+      transform 300ms var(--ease);
   }
 
   .card:hover {
     border-color: var(--border-strong);
   }
 
+  /* Linked cards lift 2px and their shadow deepens; the press settles them back down. */
   a.card:hover,
   button.card:hover {
     box-shadow: var(--shadow-float);
+    transform: translateY(-2px);
+  }
+
+  a.card:active,
+  button.card:active {
+    transform: translateY(0);
+    transition-duration: 100ms;
   }
 
   /* Light tray for app previews and readouts. */
@@ -228,11 +250,21 @@
     transition:
       background-color 150ms var(--ease),
       border-color 150ms var(--ease),
-      transform 150ms var(--ease);
+      box-shadow 200ms var(--ease),
+      transform 200ms var(--ease);
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
   }
 
   .btn:active {
-    transform: scale(0.98);
+    transform: translateY(0) scale(0.98);
+    transition-duration: 80ms;
+  }
+
+  .btn:disabled {
+    transform: none;
   }
 
   .btn-sm {
@@ -251,6 +283,10 @@
 
   .btn-primary:hover {
     background-color: var(--accent-hover);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 1px 2px rgba(16, 24, 40, 0.12),
+      0 6px 16px -6px rgba(61, 90, 254, 0.45);
   }
 
   .btn-sent {
@@ -267,6 +303,45 @@
 
   .btn-secondary:hover {
     border-color: var(--border-strong);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 4px 12px -6px rgba(16, 24, 40, 0.16);
+  }
+
+  /* Text links: an underline draws in from the left on hover and retracts to the right on leave. */
+  .link-draw {
+    position: relative;
+    transition: color 150ms var(--ease);
+  }
+
+  .link-draw::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 350ms var(--ease);
+  }
+
+  .link-draw:hover::after,
+  .link-draw:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Pictures zoom slightly inside their frame while their card is hovered. */
+  .zoom-media {
+    overflow: hidden;
+  }
+
+  .zoom-media img {
+    transition: transform 700ms var(--ease);
+  }
+
+  .group:hover .zoom-media img {
+    transform: scale(1.02);
   }
 
   .field {
@@ -439,11 +514,14 @@
     inset 0 1px 0 #ffffff,
     0 1px 2px rgba(16, 24, 40, 0.05),
     0 18px 40px -20px rgba(16, 24, 40, 0.22);
-  transition: border-color 150ms var(--ease);
+  transition:
+    border-color 200ms var(--ease),
+    transform 300ms var(--ease);
 }
 
 .gloss-card:hover {
   border-color: var(--border-strong);
+  transform: translateY(-2px);
 }
 
 .panel-gloss {
@@ -635,9 +713,21 @@
   .belt-track,
   .sheet,
   .card,
+  .gloss-card,
   .key,
-  .btn {
+  .btn,
+  .link-draw::after,
+  .zoom-media img {
     animation: none;
     transition: none;
+  }
+
+  .btn:hover,
+  .btn:active,
+  a.card:hover,
+  button.card:hover,
+  .gloss-card:hover,
+  .group:hover .zoom-media img {
+    transform: none;
   }
 }

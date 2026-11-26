@@ -2,7 +2,7 @@ import MaterialIcon from '../components/MaterialIcon';
 import SmoothScrollProvider from '../components/SmoothScrollProvider';
 import Nav from '../components/Nav';
 import SectionHeading from '../components/SectionHeading';
-import Contact from '../sections/Contact';
+import Footer from '../components/Footer';
 import { LAB } from '../data/content';
 
 export default function CreativeLab() {
@@ -10,7 +10,7 @@ export default function CreativeLab() {
     <SmoothScrollProvider>
       <Nav />
       <main>
-        <section id="top" className="px-4 pb-24 pt-32 md:px-6 md:pt-40">
+        <section id="top" data-enter className="px-4 pb-24 pt-32 md:px-6 md:pt-40">
           <div className="mx-auto max-w-6xl">
             <SectionHeading
               as="h1"
@@ -77,7 +77,7 @@ export default function CreativeLab() {
                         Full details
                         <MaterialIcon name="arrow_forward" size={18} />
                       </a>
-                      <a href="#contact" className="btn btn-secondary">
+                      <a href="/contact" className="btn btn-secondary">
                         Discuss this service
                       </a>
                     </div>
@@ -89,7 +89,7 @@ export default function CreativeLab() {
         </section>
       </main>
 
-      <Contact />
+      <Footer />
     </SmoothScrollProvider>
   );
 }

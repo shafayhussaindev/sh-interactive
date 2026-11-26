@@ -5,6 +5,7 @@ import ServicePage from './pages/ServicePage';
 import Software from './pages/Software';
 import Projects from './pages/Projects';
 import CreativeLab from './pages/CreativeLab';
+import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import { SERVICES } from './data/services';
 import { navigate, normalize, useLinkInterception, usePathname } from './lib/router';
@@ -37,6 +38,11 @@ const ROUTES = {
     CreativeLab,
     `AI Voiceover, AI Video, AI Logo Design & 3D Modeling | ${SITE}`,
     'AI creative services: realistic AI voiceover, AI video generation, AI image generation, AI logo design and brand kits, and 3D modeling and rendering in Blender.',
+  ],
+  '/contact': [
+    Contact,
+    `Contact: Start a Project | ${SITE}`,
+    'Start a project with SH Interactive: send a brief for a website, web app, business software or creative work, or reach Shafay Hussain by email, phone or WhatsApp.',
   ],
 };
 

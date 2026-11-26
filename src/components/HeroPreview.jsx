@@ -77,7 +77,7 @@ export default function HeroPreview() {
     const bump = (key) => {
       const node = el.querySelector(`[data-stat="${key}"]`);
       node.textContent = Number.parseInt(node.textContent, 10) + 1;
-      gsap.fromTo(node, { y: -6, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' });
+      gsap.fromTo(node, { y: -6, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'brand' });
     };
     const arrive = () => {
       const row = INCOMING[n % INCOMING.length];
@@ -112,7 +112,7 @@ export default function HeroPreview() {
     const mm = gsap.matchMedia();
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       const q = gsap.utils.selector(el);
-      const tl = gsap.timeline({ delay: 0.6, defaults: { ease: 'power2.out' } });
+      const tl = gsap.timeline({ delay: 0.6, defaults: { ease: 'brand' } });
 
       tl.fromTo(
         q('.chart'),

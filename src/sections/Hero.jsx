@@ -3,7 +3,7 @@ import MaterialIcon from '../components/MaterialIcon';
 
 export default function Hero() {
   return (
-    <section id="top" className="grid-bg border-b border-line px-4 pb-16 pt-32 md:px-6 md:pb-24 md:pt-40">
+    <section id="top" data-enter className="grid-bg border-b border-line px-4 pb-16 pt-32 md:px-6 md:pb-24 md:pt-40">
       <div className="mx-auto max-w-6xl">
         <div className="grid items-end gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-16">
           <div>
@@ -11,7 +11,7 @@ export default function Hero() {
               <span className="led size-1.5 rounded-full bg-ok" />
               Available for new projects · Remote
             </p>
-            <h1 className="hero-in mt-6 text-[clamp(2.75rem,6.4vw,5.5rem)] font-semibold leading-[1.02] tracking-[-0.045em] text-balance">
+            <h1 className="hero-in mt-6 text-[clamp(2.5rem,5.6vw,4.75rem)] font-semibold leading-[1.04] tracking-[-0.04em] text-balance">
               I design and build websites and web apps for businesses
             </h1>
           </div>
@@ -21,7 +21,7 @@ export default function Hero() {
               built and deployed by me, Shafay Hussain, a software engineer working with clients worldwide.
             </p>
             <div className="hero-in mt-8 flex flex-wrap gap-3">
-              <a href="#contact" className="btn btn-primary">
+              <a href="/contact" className="btn btn-primary">
                 Start a project
                 <MaterialIcon name="arrow_outward" size={18} />
               </a>
@@ -32,7 +32,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="mt-14 md:mt-20">
+        <div className="mt-14 md:mt-20" data-parallax="28">
           <HeroPreview />
         </div>
       </div>

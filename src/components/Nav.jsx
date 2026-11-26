@@ -53,10 +53,10 @@ function useLiquidPill(list, pill, target) {
         el.style.right = `${p.r}px`;
       };
       const toRight = l > p.l;
-      const slide = { duration: 0.38, ease: 'power3.out', onUpdate: apply, overwrite: 'auto' };
+      const slide = { duration: 0.38, ease: 'brand', onUpdate: apply, overwrite: 'auto' };
       gsap.to(p, { l, ...slide, delay: toRight ? 0.03 : 0 });
       gsap.to(p, { r, ...slide, delay: toRight ? 0 : 0.03 });
-      gsap.fromTo(el, { scaleY: 0.9 }, { scaleY: 1, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+      gsap.fromTo(el, { scaleY: 0.9 }, { scaleY: 1, duration: 0.6, ease: 'brand' });
       gsap.to(el, { autoAlpha: 1, duration: 0.2 });
     };
 
@@ -119,7 +119,7 @@ export default function Nav() {
           ))}
         </ul>
         <div className="flex items-center gap-2">
-          <a href="#contact" className="btn btn-sm btn-primary hidden rounded-full sm:inline-flex">
+          <a href="/contact" className="btn btn-sm btn-primary hidden rounded-full sm:inline-flex">
             Start a project
           </a>
           <button
@@ -151,7 +151,7 @@ export default function Nav() {
               </li>
             ))}
           </ul>
-          <a href="#contact" onClick={close} className="btn btn-primary mt-4 w-full justify-center rounded-full sm:hidden">
+          <a href="/contact" onClick={close} className="btn btn-primary mt-4 w-full justify-center rounded-full sm:hidden">
             Start a project
           </a>
         </div>

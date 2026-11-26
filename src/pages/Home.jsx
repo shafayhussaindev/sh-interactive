@@ -6,7 +6,7 @@ import Manifesto from '../sections/Manifesto';
 import Capabilities from '../sections/Capabilities';
 import CreativeLab from '../sections/CreativeLab';
 import Process from '../sections/Process';
-import Contact from '../sections/Contact';
+import Footer from '../components/Footer';
 
 export default function Home() {
   return (
@@ -20,7 +20,7 @@ export default function Home() {
         <CreativeLab />
         <Process />
       </main>
-      <Contact />
+      <Footer />
     </SmoothScrollProvider>
   );
 }

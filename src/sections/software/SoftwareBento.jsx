@@ -10,76 +10,21 @@ gsap.registerPlugin(ScrollTrigger);
 
 const HOVER = '(hover: hover) and (prefers-reduced-motion: no-preference)';
 
-// "Discuss →" drifts toward the pointer while hovered and eases back on leave.
-function Discuss() {
-  const ref = useRef(null);
-  useEffect(() => {
-    const mm = gsap.matchMedia();
-    mm.add(HOVER, () => {
-      const el = ref.current;
-      const x = gsap.quickTo(el, 'x', { duration: 0.4, ease: 'power3' });
-      const y = gsap.quickTo(el, 'y', { duration: 0.4, ease: 'power3' });
-      const move = (e) => {
-        const r = el.getBoundingClientRect();
-        x((e.clientX - r.left - r.width / 2) * 0.35);
-        y((e.clientY - r.top - r.height / 2) * 0.35);
-      };
-      const leave = () => {
-        x(0);
-        y(0);
-      };
-      el.addEventListener('pointermove', move);
-      el.addEventListener('pointerleave', leave);
-      return () => {
-        el.removeEventListener('pointermove', move);
-        el.removeEventListener('pointerleave', leave);
-      };
-    });
-    return () => mm.revert();
-  }, []);
-
-  return (
-    <a
-      ref={ref}
-      href="#contact"
-      className="-m-2 inline-flex items-center gap-1 rounded-lg p-2 text-sm font-medium text-ink transition-colors hover:text-accent"
-    >
-      Discuss
-      <MaterialIcon name="arrow_forward" size={16} />
-    </a>
-  );
-}
-
-// Hover: the card tilts up to ±4° toward the pointer and an accent spotlight tracks it along the border.
-function useTiltSpotlight(card, blob) {
+// Hover: an accent spotlight follows the pointer along the card's border. The card itself stays flat.
+function useSpotlight(card, blob) {
   useEffect(() => {
     const mm = gsap.matchMedia();
     mm.add(HOVER, () => {
       const el = card.current;
-      gsap.set(el, { transformPerspective: 900 });
-      const rx = gsap.quickTo(el, 'rotationX', { duration: 0.5, ease: 'power3' });
-      const ry = gsap.quickTo(el, 'rotationY', { duration: 0.5, ease: 'power3' });
-      const bx = gsap.quickTo(blob.current, 'x', { duration: 0.35, ease: 'power3' });
-      const by = gsap.quickTo(blob.current, 'y', { duration: 0.35, ease: 'power3' });
+      const bx = gsap.quickTo(blob.current, 'x', { duration: 0.35, ease: 'brand' });
+      const by = gsap.quickTo(blob.current, 'y', { duration: 0.35, ease: 'brand' });
       const move = (e) => {
         const r = el.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width;
-        const py = (e.clientY - r.top) / r.height;
-        rx((0.5 - py) * 8);
-        ry((px - 0.5) * 8);
         bx(e.clientX - r.left);
         by(e.clientY - r.top);
       };
-      const leave = () => {
-        rx(0);
-        ry(0);
-      };
       el.addEventListener('pointermove', move);
-      el.addEventListener('pointerleave', leave);
-      return () => {
-        el.removeEventListener('pointermove', move);
-        el.removeEventListener('pointerleave', leave);
-      };
+      return () => el.removeEventListener('pointermove', move);
     });
     return () => mm.revert();
   }, [card, blob]);
@@ -88,7 +33,7 @@ function useTiltSpotlight(card, blob) {
 function Card({ item }) {
   const card = useRef(null);
   const blob = useRef(null);
-  useTiltSpotlight(card, blob);
+  useSpotlight(card, blob);
   const [from, to] = item.weeks;
 
   return (
@@ -104,7 +49,7 @@ function Card({ item }) {
               <span className="eyebrow">{item.tag}</span>
             </div>
             <h3 className={`mt-10 font-semibold leading-snug ${item.wide ? 'text-xl tracking-[-0.01em]' : 'text-lg'}`}>
-              <a href={item.page} className="underline-offset-4 hover:underline">
+              <a href={item.page} className="link-draw">
                 {item.title}
               </a>
             </h3>
@@ -121,7 +66,10 @@ function Card({ item }) {
                 <span className="text-sm tabular-nums text-muted">
                   Typically <span data-num={from}>{from}</span>–<span data-num={to}>{to}</span> weeks
                 </span>
-                <Discuss />
+                <a href="/contact" className="link-draw inline-flex items-center gap-1 text-sm font-medium text-ink">
+                  Discuss
+                  <MaterialIcon name="arrow_forward" size={16} />
+                </a>
               </div>
             </div>
           </div>
@@ -148,24 +96,14 @@ export default function SoftwareBento() {
         const cards = gsap.utils.toArray('.js-bento', grid.current);
 
         if (desktop) {
-          // The exploded layers fly out of 3D space and rotate flat into their bento slots, scrubbed.
+          // The cards rise into their bento slots, scrubbed with the scroll. Flat: no rotation.
           gsap.fromTo(
             cards,
-            {
-              y: 140,
-              z: -260,
-              rotationX: 28,
-              rotationY: (i) => (i % 2 ? -16 : 16),
-              autoAlpha: 0,
-              transformPerspective: 1400,
-            },
+            { y: 64, autoAlpha: 0 },
             {
               y: 0,
-              z: 0,
-              rotationX: 0,
-              rotationY: 0,
               autoAlpha: 1,
-              ease: 'power2.out',
+              ease: 'brand',
               stagger: 0.12,
               scrollTrigger: { trigger: grid.current, start: 'top 100%', end: 'top 45%', scrub: 0.7 },
             },
@@ -173,27 +111,22 @@ export default function SoftwareBento() {
           // The stock widget arrives from where the dashboard was pinned (up and to the right).
           gsap.fromTo(
             grid.current.querySelector('.js-fly'),
-            { x: 180, y: -260, z: 200, rotationY: -22, rotationX: 8, transformPerspective: 1400 },
+            { x: 120, y: -160 },
             {
               x: 0,
               y: 0,
-              z: 0,
-              rotationY: 0,
-              rotationX: 0,
-              ease: 'power2.out',
+              ease: 'brand',
               scrollTrigger: { trigger: grid.current, start: 'top 105%', end: 'top 40%', scrub: 0.7 },
             },
           );
         } else {
-          // Phones: each card rises out of depth once as it enters, no pinning.
+          // Phones: each card rises once as it enters, no pinning.
           cards.forEach((card) =>
             gsap.from(card, {
-              z: -120,
-              rotationX: 16,
+              y: 24,
               autoAlpha: 0,
-              transformPerspective: 1000,
               duration: 0.8,
-              ease: 'power3.out',
+              ease: 'brand',
               scrollTrigger: { trigger: card, start: 'top 88%', once: true },
             }),
           );
@@ -210,7 +143,7 @@ export default function SoftwareBento() {
               gsap.to(counter, {
                 v: Number(node.dataset.num),
                 duration: 1.1,
-                ease: 'power2.out',
+                ease: 'brand',
                 snap: { v: 1 },
                 onUpdate: () => (node.textContent = counter.v),
               });
@@ -234,7 +167,7 @@ export default function SoftwareBento() {
         </div>
         <p className="reveal mt-8 text-sm text-muted">
           Need a website, store or web app instead?{' '}
-          <a href="/services" className="text-soft underline-offset-4 transition-colors hover:text-ink hover:underline">
+          <a href="/services" className="link-draw text-soft hover:text-ink">
             See web services
           </a>
         </p>

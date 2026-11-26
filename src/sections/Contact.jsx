@@ -60,10 +60,15 @@ export default function Contact() {
   const sending = status === 'sending';
 
   return (
-    <footer id="contact" className="px-4 pt-24 md:px-6 md:pt-32">
+    <section id="contact" data-enter className="px-4 pb-24 pt-32 md:px-6 md:pb-32 md:pt-40">
       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
-          <SectionHeading label="Start a project" title="Have a build in mind?">
+          <SectionHeading
+            as="h1"
+            label="Start a project"
+            title="Have a build in mind?"
+            size="text-[clamp(2.25rem,4.2vw,3.5rem)]"
+          >
             Tell me what you need and where it is headed. Every inquiry gets a direct reply from me. I'm based in Pakistan and work remotely with clients wherever they are.
           </SectionHeading>
           <p className="reveal mt-6 flex items-center gap-2 text-sm text-soft">
@@ -174,13 +179,6 @@ export default function Contact() {
           </div>
         </form>
       </div>
-
-      <div className="mx-auto mt-24 flex max-w-6xl flex-col gap-2 border-t border-line py-8 text-sm text-muted md:flex-row md:items-center md:justify-between">
-        <span>SH // Interactive · © {new Date().getFullYear()} Shafay Hussain</span>
-        <a href="#top" className="transition-colors hover:text-ink">
-          Back to top
-        </a>
-      </div>
-    </footer>
+    </section>
   );
 }
